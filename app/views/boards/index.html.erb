@@ -5,6 +5,11 @@
     <a href="/users/sign_in">로그인</a>
 <% end %>
 <h3>글 리스트</h3>
+
+<form action="/boards/index" method="GET">
+    <input type="text" name="query" value="<%= params[:query] %>" placeholder="제목, 내용으로 검색">
+    <button type="submitt">검색</button>
+</form>
 <table>
     <tr>
         <th>작성자</th>
@@ -16,7 +21,7 @@
         <tr>
             <td><%= board.user.name %></td>
             <td><%= board.title %></td>
-            <td><%= board.content %></td>
+            <td><%= board.content.html_safe %></td>
             <td>
                 <a href="/boards/show/<%= board.id %>">보기</a>
                 <% if current_user == board.user %>
@@ -27,5 +32,8 @@
         </tr>
     <% end %>
 </table>
+
+<%== pagy_nav(@pagy) %>
+
 
 <a href="/boards/new">글 작성하기</a>

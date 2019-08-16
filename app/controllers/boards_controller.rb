@@ -2,7 +2,13 @@ class BoardsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
   
   def index
-    @boards = Board.all
+    if params[:query].present?
+      @boards = Board.where("title || content like ?", "%#{params[:query]}%")
+    else
+      @boards = Board.all
+    end
+    
+    @pagy, @boards = pagy(@boards, items: 5)
   end
 
   def show
